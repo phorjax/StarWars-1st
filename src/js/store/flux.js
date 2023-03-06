@@ -1,43 +1,41 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			Planets: [],
+			 People: [], 
+			 Favorites: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			addtoFavorites: (item) => {
+				let store = getStore()
+				store.Favorites.push(item)
+				setStore(store)
+			},
+			deleteFavorites: (index) => {
+				let store = getStore()
+				let newFavorites = store.Favorites.filter((item, idx) =>
+				idx != index)
+				setStore({Favorites: newFavorites})
 			},
 			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+				var requestOptions = {
+					method: 'GET',
+					redirect: 'follow'
+				  };
+				  
+				fetch("https://www.swapi.tech/api/people/", requestOptions)
+					.then(response => response.json())
+					.then(result => setStore({People: result}))
+					.catch(error => console.log('error', error));
+
+				fetch("https://www.swapi.tech/api/planets/", requestOptions)
+					.then(response => response.json())
+					.then(result => setStore({Planets: result}))
+					.catch(error => console.log('error', error));
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
+			
+			
 		}
 	};
 };

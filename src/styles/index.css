@@ -1,3 +1,10 @@
 /* 
     General Styles
 */
+ #container{
+    padding: 20px;
+}
+#topPic{
+    height: 70px;
+    width: 150px;
+} 
