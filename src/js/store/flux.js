@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			Planets: [],
 			 People: [], 
 			 Favorites: [],
+			 Character: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -33,7 +34,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(response => response.json())
 					.then(result => setStore({Planets: result}))
 					.catch(error => console.log('error', error));
+
+				  
+
+
+
 			},
+			loadCharacterData: () => {
+				let store = getStore();
+				store.People.results && store.People.results.map((element) => { 
+					store.Character.push(element.url);
+				});
+			}
 			
 			
 		}
