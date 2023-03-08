@@ -1,50 +1,33 @@
+import React, { useState, useEffect, useContext } from "react";
+import PropTypes from "prop-types";
+import { Link, useParams } from "react-router-dom";
+import { Context } from "../store/appContext";
+import { People } from "../component/people";
+import { Planets } from "../component/planets";
 
-import React, {useContext} from "react";
-import "../../styles/home.css";
-
-import {Context} from "../store/appContext"
 export const Home = () => {
-	const {store, actions} = useContext(Context);
-	return (
-		<div className="container ">
-			<h2>Characters</h2>
-		<div className="d-flex flex-row flex-nowrap overflow-auto">
-			
-			{store.People.results && store.People.results.map((character, index)=> {
-				{console.log(character)}
-				return (
-					<div className="card" key={index}   style={{minWidth: "18rem"}}>
-		<img src="https://thorntons-investments.co.uk/wp-content/uploads/2017/08/400x200.png" className="card-img-top" alt="..." />
-		<div className="card-body d-flex flex-column">
-		  <h5 className="card-title">{character.name}</h5>
-		  <p className="card-text"><a href={character.url}>{character.name}</a><p>height:{}</p></p>
-		  <div className="navbar"><a href="#" className="btn btn-outline-primary">Learn more!</a>
-		  <button className="btn" onClick={()=> actions.addtoFavorites(character)}><i className="fa-regular fa-heart"></i></button> </div>
-		</div>
-	  </div>
-				)
-			}) } <br />
-			</div>
-			<div><h2>Planets</h2></div>
-			<div className="d-flex roller flex-row flex-nowrap overflow-auto" >
-			{store.Planets.results && store.Planets.results.map((planet, index) => {
-				// {console.log(item)}
-				return (
+  const { store, actions } = useContext(Context);
 
-				<div className="card" key={index}   style={{minWidth: "18rem"}}>
-				<img src="https://thorntons-investments.co.uk/wp-content/uploads/2017/08/400x200.png" className="card-img-top" alt="..." />
-				<div className="card-body d-flex flex-column">
-				  <h5 className="card-title">{planet.name}</h5>
-				  <p className="card-text"><a href={planet.url}>{planet.name}</a></p>
-				  <div className="navbar"><a href="#" className="btn btn-outline-primary">Learn more!</a>
-		  <button className="btn"><i className="fa-regular fa-heart"></i></button> </div>
-				</div>
-			  </div>
+  return (
+    <div className="container">
+      <section>
+        <h2>People</h2>
+        <div className="d-flex flex-row flex-nowrap overflow-auto">
+          {store.people.map((character, index) => {
+            return <People key={index} char={character} link = {"/people/" + index} />;
+          })}
+        </div>
+      </section>
 
-
-			)})}
-			</div>
-			</div>
-
-	)
+      <section>
+        <h2>Planets</h2>
+        <div className="d-flex flex-row flex-nowrap overflow-auto">
+          {store.planets.map((world, index) => {
+            return <Planets key={index} planet={world} link = {"/planets/" + index} />;
+          })}
+        </div>
+      </section>
+      
+    </div>
+  );
 };

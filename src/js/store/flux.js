@@ -1,55 +1,62 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
-		store: {
-			Planets: [],
-			 People: [], 
-			 Favorites: [],
-			 Character: [],
+	  store: {
+		favorites: [],
+		people: [],
+		planets: [],
+		demo: [],
+	  },
+	  actions: {
+		// Use getActions to call a function within a fuction
+		getData: (entity) => {
+		  fetch(`https://swapi.dev/api/${entity}/`)
+			.then((response) => {
+			  if (!response.ok) {
+				throw Error(response.statusText);
+			  }
+			  // Read the response as json.
+			  return response.json();
+			})
+			.then((responseAsJson) => {
+			  // Do stuff with the JSONified response
+			  console.log(responseAsJson.results);
+			  setStore({ [entity]: responseAsJson.results });
+			})
+			.catch((error) => {
+			  console.log("Looks like there was a problem: \n", error);
+			});
 		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			addtoFavorites: (item) => {
-				let store = getStore()
-				store.Favorites.push(item)
-				setStore(store)
-			},
-			deleteFavorites: (index) => {
-				let store = getStore()
-				let newFavorites = store.Favorites.filter((item, idx) =>
-				idx != index)
-				setStore({Favorites: newFavorites})
-			},
-			loadSomeData: () => {
-				var requestOptions = {
-					method: 'GET',
-					redirect: 'follow'
-				  };
-				  
-				fetch("https://www.swapi.tech/api/people/", requestOptions)
-					.then(response => response.json())
-					.then(result => setStore({People: result}))
-					.catch(error => console.log('error', error));
-
-				fetch("https://www.swapi.tech/api/planets/", requestOptions)
-					.then(response => response.json())
-					.then(result => setStore({Planets: result}))
-					.catch(error => console.log('error', error));
-
-				  
-
-
-
-			},
-			loadCharacterData: () => {
-				let store = getStore();
-				store.People.results && store.People.results.map((element) => { 
-					store.Character.push(element.url);
-				});
-			}
-			
-			
-		}
+  
+		addFav: (newFav) => {
+		  let newFavorites = getStore().favorites;
+		  newFavorites.push(newFav);
+  
+		  setStore({ favorites: newFavorites });
+		},
+  
+		deleteFav: (name) => {
+		  let filtered = getStore().favorites.filter((item) => item.name != name);
+  
+		  setStore({ favorites: filtered });
+		},
+  
+		changeColor: (index, color) => {
+		  //get the store
+		  const store = getStore();
+  
+		  //we have to loop the entire demo array to look for the respective index
+		  //and change its color
+		  const demo = store.demo.map((elm, i) => {
+			if (i === index) elm.background = color;
+			return elm;
+		  });
+  
+		  //reset the global store
+		  setStore({ demo: demo });
+		},
+	  },
 	};
-};
-
-export default getState;
+  };
+  
+  export default getState;
+  

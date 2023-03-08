@@ -14,7 +14,7 @@ export const Single = props => {
 
 			<Link to="/">
 				<span className="btn btn-primary btn-lg" href="#" role="button">
-					Home
+					Back home
 				</span>
 			</Link>
 		</div>
