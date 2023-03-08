@@ -27,8 +27,5 @@ h2{
     padding: 20px;
 }
 #float{
-    float:right;
-}
-#floatImg{
-    float:left;
+    display:flex;
 }
